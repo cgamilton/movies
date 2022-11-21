@@ -22,6 +22,7 @@ public class MoviesService {
 	MoviesRepository repository;
 	
 	public MovieDTO getWinner() {
+		
 		var movieDTO = new MovieDTO();
 		var qry = repository.listWinner();
 		
@@ -51,19 +52,19 @@ public class MoviesService {
 		});
 		
 		list.sort(Comparator.comparing(MovieData::getInterval));
-		
 		var mapMovieData = list.stream()
 							.collect(Collectors.groupingBy(MovieData::getInterval, LinkedHashMap::new, Collectors.toList()));
-		
 		for (Map.Entry<Long, List<MovieData>> e : mapMovieData.entrySet()) {
 			movieDTO.setMin(e.getValue());
 			break;
 		}
 		if(mapMovieData.size() > 1) {
-			var mapReversed = mapMovieData.entrySet()
+			LinkedHashMap<Long,List<MovieData>> mapReversed = mapMovieData.entrySet()
 										.stream()
 										.sorted((Map.Entry.comparingByKey(Comparator.reverseOrder())))
-										.collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue()));
+										.collect(Collectors.toMap(e1 -> e1.getKey(), e2 -> e2.getValue(), (k, v) -> k,
+												LinkedHashMap::new));
+			mapReversed.forEach((k,v) -> System.out.println(k));
 			for (Map.Entry<Long, List<MovieData>> e : mapReversed.entrySet()) {
 				movieDTO.setMax(e.getValue());
 				break;

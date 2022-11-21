@@ -7,6 +7,5 @@ quarkus:
     dialect: org.hibernate.dialect.H2Dialect
     log:
       sql: 'true'
-    sql-load-script: sql/import.sql
     database:
       generation: drop-and-create
