@@ -70,7 +70,6 @@ public class MoviesService {
 										.sorted((Map.Entry.comparingByKey(Comparator.reverseOrder())))
 										.collect(Collectors.toMap(e1 -> e1.getKey(), e2 -> e2.getValue(), (k, v) -> k,
 												LinkedHashMap::new));
-			mapReversed.forEach((k,v) -> System.out.println(k));
 			for (Map.Entry<Long, List<MovieData>> e : mapReversed.entrySet()) {
 				movieDTO.setMax(e.getValue());
 				break;
