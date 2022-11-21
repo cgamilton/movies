@@ -34,10 +34,17 @@ http://localhost:8080/movies
 ## Extensões utilizadas:
 
 Agroal - Database connection pool
+
 YAML Configuration
+
 Hibernate ORM with Panache
+
 JDBC Driver - H2
+
 REST Client Classic Jackson
+
 RESTEasy Classic Jackson
+
 Undertow Servlet
+
 Eclipse Vert.x
