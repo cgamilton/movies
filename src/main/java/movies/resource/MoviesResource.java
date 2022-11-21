@@ -26,7 +26,7 @@ public class MoviesResource {
 	@GET
 	@Transactional
 	@Produces(MediaType.APPLICATION_JSON)
-	public MovieDTO listAll() {
+	public MovieDTO getWinner() {
 		return service.getWinner();
 	}
 }

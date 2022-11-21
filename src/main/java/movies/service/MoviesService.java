@@ -40,7 +40,7 @@ public class MoviesService {
 		});
 		
 		
-		
+		// create list with all winner values  
 		var list = new ArrayList<MovieData>();
 		map.forEach((k, v) -> {
 			var movieData = new MovieData();
@@ -51,13 +51,19 @@ public class MoviesService {
 			list.add(movieData);
 		});
 		
+		// sort list with all winner values desc
 		list.sort(Comparator.comparing(MovieData::getInterval));
+		
+		//create map with interval as key, and winner data as value, sorted 
 		var mapMovieData = list.stream()
 							.collect(Collectors.groupingBy(MovieData::getInterval, LinkedHashMap::new, Collectors.toList()));
+		
+		// add to DTO first (min) object from map
 		for (Map.Entry<Long, List<MovieData>> e : mapMovieData.entrySet()) {
 			movieDTO.setMin(e.getValue());
 			break;
 		}
+		// if has more than one object in map, add to DTO first (min) object from reverse ordered map
 		if(mapMovieData.size() > 1) {
 			LinkedHashMap<Long,List<MovieData>> mapReversed = mapMovieData.entrySet()
 										.stream()

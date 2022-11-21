@@ -59,6 +59,55 @@ class MoviesResourceTest {
 		.body("max[0].followingWin", is(2000));
 	}
 	
+	@Test
+	public void testDataEndpoint2MinWinners() {
+		persistData();
+		persistData2();
+		persistData3();
+		given().when()
+		.get("/")
+		.then().statusCode(200)
+		.body("min[0].producer", is("Alexandre"))
+		.body("min[0].interval", is(1))
+		.body("min[0].previousWin", is(1995))
+		.body("min[0].followingWin", is(1996))
+		.body("min[1].producer", is("Paul"))
+		.body("min[1].interval", is(1))
+		.body("min[1].previousWin", is(1983))
+		.body("min[1].followingWin", is(1984))
+		.body("max[0].producer", is("Amilton"))
+		.body("max[0].interval", is(10))
+		.body("max[0].previousWin", is(1990))
+		.body("max[0].followingWin", is(2000));
+	}
+	
+	@Test
+	public void testDataEndpoint2MinWinners2MaxWinners() {
+		persistData();
+		persistData2();
+		persistData3();
+		persistData4();
+		given().when()
+		.get("/")
+		.then().statusCode(200)
+		.body("min[0].producer", is("Alexandre"))
+		.body("min[0].interval", is(1))
+		.body("min[0].previousWin", is(1995))
+		.body("min[0].followingWin", is(1996))
+		.body("min[1].producer", is("Paul"))
+		.body("min[1].interval", is(1))
+		.body("min[1].previousWin", is(1983))
+		.body("min[1].followingWin", is(1984))
+		.body("max[0].producer", is("John"))
+		.body("max[0].interval", is(10))
+		.body("max[0].previousWin", is(1972))
+		.body("max[0].followingWin", is(1982))
+		.body("max[1].producer", is("Amilton"))
+		.body("max[1].interval", is(10))
+		.body("max[1].previousWin", is(1990))
+		.body("max[1].followingWin", is(2000));
+	}
+	
 	@Transactional
 	void persistData() {
 		var movie = new Movie();
@@ -94,6 +143,46 @@ class MoviesResourceTest {
 		movie.setYear(1996);
 		movie.setWinner("yes");
 		movie.setTitle("The best movie 2");
+		movie.setStudios("BNU Studios");
+
+		repository.persist(movie);
+	}
+	@Transactional
+	void persistData3() {
+		var movie = new Movie();
+		movie.setProducers("Paul");
+		movie.setYear(1983);
+		movie.setWinner("yes");
+		movie.setTitle("Paul 1");
+		movie.setStudios("BNU Studios");
+
+		repository.persist(movie);
+		movie = new Movie();
+		movie.setProducers("Paul");
+		movie.setYear(1984);
+		movie.setWinner("yes");
+		movie.setTitle("Paul 2");
+		movie.setStudios("BNU Studios");
+
+		repository.persist(movie);
+	}
+	
+	
+	@Transactional
+	void persistData4() {
+		var movie = new Movie();
+		movie.setProducers("John");
+		movie.setYear(1972);
+		movie.setWinner("yes");
+		movie.setTitle("Bugs 1");
+		movie.setStudios("BNU Studios");
+
+		repository.persist(movie);
+		movie = new Movie();
+		movie.setProducers("John");
+		movie.setYear(1982);
+		movie.setWinner("yes");
+		movie.setTitle("Bugs 2");
 		movie.setStudios("BNU Studios");
 
 		repository.persist(movie);
