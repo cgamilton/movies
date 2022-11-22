@@ -26,8 +26,9 @@ public class MoviesService {
 		var movieDTO = new MovieDTO();
 		var qry = repository.listWinner();
 		
+		var lst = checkPartnershipProduction(qry.list());
 		//collect to map producers that appears more than one time 
-		var map = qry.list()
+		var map = lst
 				.stream()
 				.collect(Collectors.groupingBy(Movie::getProducers))
 				.entrySet()
@@ -78,6 +79,35 @@ public class MoviesService {
 		
 		
 		return movieDTO;
+	}
+	
+	private List<Movie> checkPartnershipProduction(List<Movie> movies) {
+		List<Movie> result = new ArrayList<>();
+		for (Movie movie : movies) {
+			if (isPartnershipProduction(movie.getProducers())) {
+				for (String str : getProducersArray(movie.getProducers())) {
+					var m = new Movie();
+					m.setProducers(str.trim());
+					m.setStudios(movie.getStudios());
+					m.setTitle(movie.getTitle());
+					m.setWinner(movie.getWinner());
+					m.setYear(movie.getYear());
+					result.add(m);
+				}
+			} else {
+				result.add(movie);
+			}
+		}
+		return result;
+	}
+
+	private boolean isPartnershipProduction(String producers) {
+		return producers != null && (producers.contains(",") || producers.contains(" and "));
+	}
+	
+	private String[] getProducersArray(String producers) {
+		producers = producers.replaceAll(" and ", ",");
+		return producers.split(",");
 	}
 	
 	private Long calcInterval(List<Movie> movies) {
